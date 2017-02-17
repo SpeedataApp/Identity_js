@@ -1,74 +1,55 @@
-RFIDScannerPlugin
+Identity Plugin
 =================
 
-RFID Scanner plugin for PhoneGap
+Identity Plugin for  PhoneGap/cordova
 
-This PhoneGap plugin allows third-party software developers to easily add UHF RFID reading features using MTI’s RFID ME&#153; mobile readers.
-
-It enables two main features: Scan and Radar
-
-Scan makes RIFD tags reading, retrieving its EPCs.
-
-`success` and `fail` are callback functions. Success is passed an object with data and cancelled properties. Data is the json array with a list of epc tag data and cancelled is whether or not the user cancelled the scan.
-
+本插件试用与北京思必拓科技股份  带有二代证模块的PDA   
 A full example to scan could be:
 ...
 
-    function callScan() {
-        try {
-          rfidscanner.scan(winScan, failScan);
-        } catch(err) {
-          alert("Error: " + err);
-        }
-    }
-
-    var winScan = function (result) {
-                      if (!result.cancelled) {
-                          var v = "";
-                          for(var i = 0; i < result.tags.length; i++) {
-                              v += result.tags[i] + "\n";
-                          }
-                          document.getElementById('epcs').value = v;
-                      } else {
-                          alert("Leitura Cancelada.");
-                      }
-                  };
-
-    var failScan = function (error) {
-                       alert("Scanning failed: " + error);
-                   };
+    	function callRead() {
+		//alert(scan)
+		try {
+			// 设置参数 
+			var jsonstr=["/dev/ttyMT1",0,94];
+			//调用初始化模块函数
+			identity.init(winInit,failInit,jsonstr);
+			//调用读身份证函数
+			identity.read(winRead, failRead);
+			
+		} catch (err) {
+			alert("Error: " + err)
+		}
+	}
+	var winRead = function(result) {
+	    var v="";
+		if (!result.cancelled) {
+			for (var i = 0; i < result.tags.length; i++) {
+				v += result.tags[i] + "\n"
+			}
+			alert(v)
+		} else {
+			alert("Leitura Cancelada.")
+		}
+		//读成功后 释放模块
+		identity.release(winRead, failRead);
+	};
+	var failRead = function(error) {
+		alert("read failed: " + error)
+	};
+	
+	var winInit = function(result) {
+	    alert("init success")
+	};
+	var failInit = function(error) {
+		alert("init failed: " + error)
+	};
                    
 ...
-
-Radar lets user search for the items in a list
-
-`success` and `fail` are callback functions. Success is passed an object with cancelled properties. Cancelled is whether or not the user cancelled the scan.
-
-A full example to radar could be:
-...
-
-    function callRadar() {
-        try {
-          var tags = document.getElementById('epcs').value.split("\n");
-          rfidscanner.radar(winScan, failScan, tags);
-        } catch(err) {
-          alert("Error: " + err);
-        }
-    }
-
-    var winRadar = function (result) {
-                      if (result.cancelled) {
-                          alert("Leitura Cancelada.");
-                      }
-                  };
-
-    var failRadar = function (error) {
-                       alert("Scanning failed: " + error);
-                   };
- ...
-
-Install
-========
-Assuming the PhoneGap CLI is installed, from the command line run:
-
-phonegap local plugin add https://github.com/eficid/RFIDScannerPlugin
+需拷贝base.dat license.lic 至/sdcard/wltlib目录下  参考depend_file.png
+ 读到的身份证照片  也保存在该目录下
+ 
+ KT50  参数设置
+ var jsonstr=["/dev/ttyMT1",0,93];
+  KT45Q  参数设置
+ var jsonstr=["/dev/ttyMT1",0,94];
