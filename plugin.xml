@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+           id="com.speedata.libid2.Identity"
+      version="0.1.0">
+    <name>Identity</name>
+    <description>Identity PhoneGap Plugin</description>
+    <license>MIT</license>
+    <keywords>phonegap,Identity</keywords>
+
+    <engines>
+      <engine name="cordova" version=">=3.4.0" />
+    </engines>    
+    
+    <js-module src="www/identity.js" name="Identity">
+        <clobbers target="window.identity" />
+    </js-module>
+
+    <!-- android -->
+    <platform name="android">
+        <config-file target="res/xml/config.xml" parent="/*">
+            <feature name="Identity">
+                <param name="android-package" value="com.speedata.libid2.Identity"/>
+            </feature>
+        </config-file>
+
+		
+		  
+        <source-file src="src/android/Identity.java" target-dir="src/com/speedata/libid2" />    
+
+        <source-file src="src/android/armeabi/libpackage.so" target-dir="libs/armeabi" />
+        <source-file src="src/res/raw/base.dat" target-dir="res/raw" />
+		<source-file src="src/res/raw/license.lic" target-dir="res/raw" />
+		<source-file src="src/android/armeabi/libdewlt2-jni.so" target-dir="libs/armeabi" />
+		<source-file src="src/android/armeabi/libserial_port.so" target-dir="libs/armeabi" />
+		<source-file src="src/android/armeabi/libreader-jni.so" target-dir="libs/armeabi" />
+		<source-file src="src/android/armeabi/libserial_porter.so" target-dir="libs/armeabi" />
+		<source-file src="src/android/armeabi/libwltdecode.so" target-dir="libs/armeabi" />
+        <source-file src="src/android/classes.jar" target-dir="libs" />
+		<source-file src="src/android/fastjson-1.2.7.jar" target-dir="libs" />
+		<source-file src="src/android/identity.jar" target-dir="libs" />
+		<source-file src="src/android/HS_CVR100U.jar" target-dir="libs" />
+		<source-file src="src/android/sdtapi.jar" target-dir="libs" />
+		
+		
+     </platform>          
+</plugin>
